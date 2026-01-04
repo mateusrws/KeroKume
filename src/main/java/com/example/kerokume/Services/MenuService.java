@@ -18,14 +18,17 @@ public class MenuService {
     return menuRepo.findAll();
   }
 
-  public String create(MenuModel menuModel){
-    if(menuRepo.findById(menuModel.getId()).isPresent()){
-      menuRepo.save(menuModel);
-      return "Menu created successfully";
-    }else{
-      return "Already exists this Menu";
+  public MenuModel create(MenuModel menuModel){
+
+    // Se tentar criar com ID existente
+    if (menuModel.getId() != null && menuRepo.existsById(menuModel.getId())) {
+        return null; // ou lance exceção
     }
-  }
+
+    return menuRepo.save(menuModel);
+}
+
+  
 
   public String update(MenuModel menuModel){
     if(menuRepo.findById(menuModel.getId()).isPresent()){

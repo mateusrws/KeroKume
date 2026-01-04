@@ -27,7 +27,7 @@ public class MenuController {
   }
 
   @PostMapping
-  public String create(@RequestBody MenuModel menuModel){
+  public MenuModel create(@RequestBody MenuModel menuModel){
     return menuService.create(menuModel);
   }
 
