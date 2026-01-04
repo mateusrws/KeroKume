@@ -2,12 +2,12 @@ package com.example.kerokume.Services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.kerokume.Repositorys.FoodRepo;
-import com.example.kerokume.Repositorys.MenuRepo;
 import com.example.kerokume.Models.FoodModel;
 
 
@@ -15,6 +15,7 @@ import com.example.kerokume.Models.FoodModel;
 public class FoodService {
   @Autowired
   private FoodRepo foodRepo;
+
 
   @Autowired
 
@@ -59,10 +60,10 @@ public class FoodService {
     }
   }
 
-  public String delete(FoodModel food){
-    if(foodRepo.findById(food.getId()).isPresent())
+  public String delete(UUID id){
+    if(foodRepo.findById(id).isPresent())
     {
-      foodRepo.delete(food);
+      foodRepo.deleteById(id);
       return "Product deleted succesfully";
     }else
     {

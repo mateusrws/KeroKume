@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.kerokume.Models.RestaurantModel;
@@ -15,14 +16,19 @@ public class RestaurantService {
   @Autowired
   private RestaurantRepo restaurantRepo;
 
+  @Autowired 
+  private PasswordEncoder passwordEncoder;
+
+
   public List<RestaurantModel> getAllRestaurants() {
     return restaurantRepo.findAll();
   }
 
   public String createRestaurant(RestaurantModel restaurant) {
-    if (restaurantRepo.findById(restaurant.getId()).isPresent()) {
+    if (restaurantRepo.findResByName(restaurant.getName()).isPresent()) {
       return "Restaurant already exists";
     }
+    restaurant.setPassword(passwordEncoder.encode(restaurant.getPassword()));
     restaurantRepo.save(restaurant);
     return "Restaurant created successfully";
   }

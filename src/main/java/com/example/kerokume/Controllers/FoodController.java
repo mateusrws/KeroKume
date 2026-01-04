@@ -1,5 +1,8 @@
 package com.example.kerokume.Controllers;
 
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,35 +12,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.UUID;
+import com.example.kerokume.Models.FoodModel;
+import com.example.kerokume.Services.FoodService;
 
-import com.example.kerokume.Models.MenuModel;
-import com.example.kerokume.Services.MenuService;
 
 @RestController
-@RequestMapping("menu")
-public class MenuController {
+@RequestMapping("foods")
+public class FoodController {
   @Autowired
-  private MenuService menuService;
+  private FoodService foodService;
 
   @GetMapping
-  public List<MenuModel> get(){
-    return menuService.get();
+  public List<FoodModel> get(){
+    return foodService.getAll();
+  }
+
+  @GetMapping("available") 
+  public List<FoodModel> getAllAvailableTrue(){
+    return foodService.getAllAvailableTrue();
   }
 
   @PostMapping
-  public String create(@RequestBody MenuModel menuModel){
-    return menuService.create(menuModel);
+  public String create(@RequestBody FoodModel food){
+    return foodService.create(food);
   }
 
   @PutMapping
-  public String update(@RequestBody MenuModel menuModel){
-    return menuService.update(menuModel);
+  public String update(@RequestBody FoodModel food){
+    return foodService.update(food);
   }
 
   @DeleteMapping
   public String delete(@RequestBody UUID id){
-    return menuService.delete(id);
+    return foodService.delete(id);
   }
 }
