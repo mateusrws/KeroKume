@@ -4,15 +4,14 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-import javax.management.RuntimeErrorException;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-import com.example.kerokume.Models.RestaurantModel;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.example.kerokume.Models.Restaurant.RestaurantModel;
 
 @Service
 public class TokenService {
@@ -27,7 +26,7 @@ public class TokenService {
                                  .withExpiresAt(getExpirationTime())
                                  .sign(algorithm);
       return token;
-    } catch (JWTCreationException e) {
+    } catch (JWTVerificationException e) {
       throw new RuntimeException("Error while generetion Token", e);
     }
   }

@@ -5,9 +5,9 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.kerokume.Models.MenuModel;
-import com.example.kerokume.Models.RestaurantModel;
+import com.example.kerokume.Models.Menu.MenuModel;
+import com.example.kerokume.Models.Restaurant.RestaurantModel;
 
 public interface MenuRepo extends JpaRepository<MenuModel, UUID>{
-  public List<MenuModel> findAllByRes(RestaurantModel restaurant);
+  public List<MenuModel> findAllByRestaurant(RestaurantModel restaurant);
 }

@@ -1,4 +1,4 @@
-package com.example.kerokume.Models;
+package com.example.kerokume.Models.Restaurant;
 
 import java.util.Collection;
 import java.util.List;
@@ -35,6 +35,8 @@ public class RestaurantModel implements UserDetails {
     private String password;
 
     private String imgPathProfile;
+    
+    @Column(nullable = false)  
     private String description;
 
     @Enumerated(EnumType.STRING)

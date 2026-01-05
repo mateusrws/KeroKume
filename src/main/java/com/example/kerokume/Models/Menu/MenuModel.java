@@ -1,7 +1,10 @@
-package com.example.kerokume.Models;
+package com.example.kerokume.Models.Menu;
 
 import java.util.List;
 import java.util.UUID;
+
+import com.example.kerokume.Models.Food.FoodModel;
+import com.example.kerokume.Models.Restaurant.RestaurantModel;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,7 +30,7 @@ public class MenuModel {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @Column(unique = true)
+  @Column(unique = true, nullable = false)  
   private String name;
 
   @ManyToOne

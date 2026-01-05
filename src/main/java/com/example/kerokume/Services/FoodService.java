@@ -7,8 +7,9 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.kerokume.Models.Food.CreateFoodRequest;
+import com.example.kerokume.Models.Food.FoodModel;
 import com.example.kerokume.Repositorys.FoodRepo;
-import com.example.kerokume.Models.FoodModel;
 
 
 @Service
@@ -27,26 +28,33 @@ public class FoodService {
     return foodRepo.findByIsAvailableTrue();
   }
 
-  public String create(FoodModel food){
+  public FoodModel create(CreateFoodRequest foodDto) {
 
-    Optional<FoodModel> foodPresents = foodRepo.findById(food.getId());
-
-
-    if(food.getMenuFather() != null){
-      if (foodPresents.isPresent() && foodPresents.get().getMenuFather().equals(food.getMenuFather()) || !foodPresents.isPresent()) 
-      {
-        foodRepo.save(food);
-        return "Create food succefully";
+      if (foodDto.menuFather() == null) {
+          throw new IllegalArgumentException("MenuFather is required");
       }
-      else
-      {
-        return "This product already exist";
+
+      boolean exists = foodRepo.existsByNameAndMenuFather(
+        foodDto.name(),
+        foodDto.menuFather()
+      );
+
+      if (exists) {
+          throw new IllegalStateException("This product already exists in this menu");
       }
-    }
-    else 
-    {
-      return "MenuFather is empty";
-    }
+
+      FoodModel food = new FoodModel(
+        foodDto.name(),
+        foodDto.description(),
+        foodDto.price(),
+        foodDto.imgPath(),
+        foodDto.foodCategory(),
+        foodDto.isAvailable(),
+        foodDto.menuFather()
+      );    
+    
+
+      return foodRepo.save(food);
   }
 
   public String update(FoodModel food){

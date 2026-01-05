@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.kerokume.Infra.TokenService;
 import com.example.kerokume.Models.AuthenticationDto;
 import com.example.kerokume.Models.LoginResponseDto;
-import com.example.kerokume.Models.RestaurantModel;
+import com.example.kerokume.Models.Restaurant.RestaurantModel;
 
 @RestController
 @RequestMapping("auth")
@@ -24,7 +24,7 @@ public class AuthenticationController {
   private TokenService tokenService;
 
   @PostMapping("/login")
-  public ResponseEntity<?> login(@RequestBody AuthenticationDto data) {
+  public ResponseEntity<?> login(@Validated @RequestBody AuthenticationDto data) {
       var token = new UsernamePasswordAuthenticationToken(
           data.login(),
           data.password()

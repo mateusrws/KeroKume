@@ -6,14 +6,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.kerokume.Models.RestaurantModel;
+import com.example.kerokume.Models.Restaurant.RestaurantModel;
 import com.example.kerokume.Repositorys.RestaurantRepo;
 
-import ch.qos.logback.core.subst.Token;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +25,15 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Autowired
     private RestaurantRepo restaurantRepo;
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+
+        return path.startsWith("/auth") ||
+               path.startsWith("/foods") ||
+               (path.equals("/menu") && request.getMethod().equals("GET"));
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -43,11 +50,12 @@ public class SecurityFilter extends OncePerRequestFilter {
                     restaurantRepo.findResByName(name);
 
             if (restaurant.isPresent()) {
-                var authentication = new UsernamePasswordAuthenticationToken(
-                        restaurant.get(),
-                        null,
-                        restaurant.get().getAuthorities()
-                );
+                var authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                restaurant.get(),
+                                null,
+                                restaurant.get().getAuthorities()
+                        );
 
                 SecurityContextHolder.getContext()
                         .setAuthentication(authentication);
